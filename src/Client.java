@@ -13,6 +13,8 @@ import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * CrawlingServer, CrawlingRankServer, chatTestServer 가동후 실행
@@ -57,12 +59,39 @@ public class Client extends JFrame {
     // panel3
     private final JTextArea reviewText = new JTextArea();
 
+    /**
+     * 웹크롤링시 실제 사이트에 명령어가 입력될 위험
+     * 검색내용에 아래의 pattern 명령어가 입력될 시 필터링
+     */
+    private final static String UNSECURED_CHAR_REGULAR_EXPRESSION =
+            "select|delete|update|insert|create|alter|drop";
+    private static Pattern unsecuredCharPattern;
+
+    public static void initialize(){
+        unsecuredCharPattern = Pattern.compile(UNSECURED_CHAR_REGULAR_EXPRESSION,Pattern.CASE_INSENSITIVE);
+    }
+    private static String makeSecureString(final String str, int maxLength)
+    {
+        String secureStr = str.substring(0, maxLength);
+        Matcher matcher = unsecuredCharPattern.matcher(secureStr);
+        if(matcher.find()){
+            return matcher.replaceAll("");
+        }
+        else{
+            return secureStr;
+        }
+    }
+
+
+
     public static void main(String[] args) throws InterruptedException {
         checkID();
+        initialize();
         new Client();
         chatTestClient client = new chatTestClient(userID);
         client.start(); // Client의 Socket를 만드는 start 함수임, Thread의 start함수가 아님!
     }
+
 
     /**
      * CrawlingRankServer로부터 값을 받아옵니다.
@@ -275,12 +304,13 @@ public class Client extends JFrame {
                 }
                 else {
                     search_title = text_p1.getText();
+                    search_title =makeSecureString(search_title,search_title.length());//명령어 형식 제거
+                    System.out.println(search_title);
                     recycle();
                 }
             }
         });
     }
-
     private ImageIcon imageSize(String absolutePath) {
         ImageIcon icon = new ImageIcon(absolutePath);
         Image img = icon.getImage();
@@ -313,10 +343,6 @@ public class Client extends JFrame {
          * 크롤링한 값을 JFrame에 적용시킵니다.
          */
         String header[] = {"아이디", "내용", "평점", "날짜"};
-
-        /**
-         * 여기
-         */
 
         DefaultTableModel model = new DefaultTableModel(review_sum,header);
         JTable review = new JTable(model);
