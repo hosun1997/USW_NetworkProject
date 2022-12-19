@@ -7,36 +7,70 @@ import java.net.Socket;
  */
 public class CrawlingRankServer {
     public CrawlingRankServer(){
+        ServerSocket serverSocket = null;
+        Socket socket = null;
         try {
-            ServerSocket serverSocket = new ServerSocket(4000);
+            serverSocket = new ServerSocket(4000);
             System.out.println("서버 가동됨");
-            Socket socket = serverSocket.accept();
-            System.out.println("클라이언트 연결 접수됨...");
-            System.out.println("[client] : " + socket.getInetAddress());
+            while (true) {
+                socket = serverSocket.accept();
 
-            InputStream is = socket.getInputStream();
-            OutputStream os = socket.getOutputStream();
-            ObjectInputStream ois = new ObjectInputStream(is);
-            ObjectOutputStream oos = new ObjectOutputStream(os);
+                CrawlingRankThread crawlingRankThread = new CrawlingRankThread(socket);
+                crawlingRankThread.start();
+            }
 
-
-            Thread thread = new Thread(new webCrawlingRank());
-            thread.start();
-            thread.join();
-
-            MovieRankObj movieRankObj = new MovieRankObj();
-            movieRankObj.setMain_title(webCrawlingRank.main_title);
-            movieRankObj.setMain_poster(webCrawlingRank.main_poster);
-            movieRankObj.setMain_sum(webCrawlingRank.main_sum);
-
-
-            oos.writeObject(movieRankObj);//영화 랭킹 정보를 제공
         } catch (IOException e) {
             throw new RuntimeException(e);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        }
+        finally {
+            try {
+                serverSocket.close();
+                System.out.println("Sever Closed!");
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("SeverSocket Communication Error!");
+            }
         }
 
+    }
+
+    class CrawlingRankThread extends Thread{
+
+        ObjectInputStream ois;
+        ObjectOutputStream oos;
+        OutputStream os;
+        InputStream is;
+        public CrawlingRankThread(Socket socket){
+            is = null;
+            try {
+                is = socket.getInputStream();
+                os = socket.getOutputStream();
+                ois = new ObjectInputStream(is);
+                oos = new ObjectOutputStream(os);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        @Override
+        public void run() {
+            Thread thread = new Thread(new webCrawlingRank());
+            thread.start();
+            try {
+                thread.join();
+                MovieRankObj movieRankObj = new MovieRankObj();
+                movieRankObj.setMain_title(webCrawlingRank.main_title);
+                movieRankObj.setMain_poster(webCrawlingRank.main_poster);
+                movieRankObj.setMain_sum(webCrawlingRank.main_sum);
+
+
+                oos.writeObject(movieRankObj);//영화 랭킹 정보를 제공
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     public static void main(String[] args) {

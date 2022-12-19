@@ -374,6 +374,7 @@ public class Client extends JFrame {
 
         poster.removeAll();
         welcome.removeAll();
+        grade.removeAll();
 
         movieposter.setBounds(5, 3, 295, 270);
         movieposter.setBorder(new LineBorder(Color.black));

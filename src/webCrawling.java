@@ -99,7 +99,7 @@ public class webCrawling implements Runnable{
                     review_date = reple_date.text();// 리뷰 작성일
                     review[i+k*REVIEW_SIZE][3] = review_date;
 
-                    System.out.println(review_score + " : " + review_reple + " " + review_user + " " + review_date);
+//                    System.out.println(review_score + " : " + review_reple + " " + review_user + " " + review_date);
                 }
             }
         } catch (IOException e) {
