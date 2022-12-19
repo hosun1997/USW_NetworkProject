@@ -3,12 +3,15 @@ import Test.Movie;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 
 /**
@@ -310,7 +313,13 @@ public class Client extends JFrame {
          * 크롤링한 값을 JFrame에 적용시킵니다.
          */
         String header[] = {"아이디", "내용", "평점", "날짜"};
-        JTable review = new JTable(review_sum,header);
+
+        /**
+         * 여기
+         */
+
+        DefaultTableModel model = new DefaultTableModel(review_sum,header);
+        JTable review = new JTable(model);
         JScrollPane reviewScroll = new JScrollPane(review);
 
         JLabel gradeAudience = new JLabel("관람객 ");
@@ -384,9 +393,32 @@ public class Client extends JFrame {
         registration.setBounds(410, 61, 175, 50);
         welcome.add(score);
         welcome.add(score10);
-        welcome.add(registration);
+        welcome.add(registration);//등록버튼
         welcome.add(reviewText);
 
+        /**
+         * 리뷰를 등록합니다.
+         */
+        registration.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Date date = new Date();
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy.dd.MM HH:mm");
+
+                String review_date = formatter.format(date);
+                String inputStr[] = new String[4];
+
+                inputStr[0] = userID;
+                inputStr[1] = reviewText.getText();
+                inputStr[2] = score.getText();
+                inputStr[3] = review_date;
+
+                model.addRow(inputStr);
+
+                reviewText.setText("");
+                score.setText("");
+            }
+        });
         add(poster);
         add(welcome);
 
