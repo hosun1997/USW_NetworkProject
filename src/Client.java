@@ -53,11 +53,14 @@ public class Client extends JFrame {
     // recycle
     private final JLabel movieposter = new JLabel();
     private final JLabel grade = new JLabel();
-    private final JTextField score = new JTextField();
+
+    private JComboBox<String> score;
     private final JLabel score10 = new JLabel("/ 10");
     private final JButton registration = new JButton("등록");
     // panel3
     private final JTextArea reviewText = new JTextArea();
+
+    private static int table_count = 0;
 
     /**
      * 웹크롤링시 실제 사이트에 명령어가 입력될 위험
@@ -350,6 +353,8 @@ public class Client extends JFrame {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+        String scorebox[] = {"10", "9", "8", "7", "6", "5", "4", "3", "2", "1"};
+        score = new JComboBox<String>(scorebox);
 
         /**
          * 크롤링한 값을 JFrame에 적용시킵니다.
@@ -426,8 +431,7 @@ public class Client extends JFrame {
         score10.setBounds(510, 4, 75, 55);
         score10.setFont(new Font("", Font.BOLD, 30));
         score10.setHorizontalAlignment(JLabel.CENTER);
-        score.setFont(new Font("", Font.BOLD, 30));
-        score.setHorizontalAlignment(JTextField.CENTER);
+        score.setFont(new Font("", Font.BOLD, 15));
         score.setBounds(410, 4, 100, 55);
         score.setBorder(new LineBorder(Color.black));
         registration.setBounds(410, 61, 175, 50);
@@ -444,20 +448,30 @@ public class Client extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 Date date = new Date();
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy.dd.MM HH:mm");
-
                 String review_date = formatter.format(date);
                 String inputStr[] = new String[4];
 
                 inputStr[0] = userID;
                 inputStr[1] = reviewText.getText();
-                inputStr[2] = score.getText();
+                inputStr[2] = score.getSelectedItem().toString();
                 inputStr[3] = review_date;
 
+                for(int i=0; i < review.getRowCount(); i++){
+                    if(review.getValueAt(i,0) == userID){
+                        model.removeRow(i);//같은 아이디로 이미 작성했으면 제거
+                        break;
+                    }
+                }
+
                 model.addRow(inputStr);
-                myStar.setText(score.getText());
+
+                if (inputStr[2] == "10") {
+                    myStar.setText(inputStr[2] + ".0");
+                }else{
+                    myStar.setText(inputStr[2] + ".00");
+                }//내 점수 표시
 
                 reviewText.setText("");
-                score.setText("");
             }
         });
         add(poster);
