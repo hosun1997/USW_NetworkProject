@@ -82,6 +82,17 @@ public class Client extends JFrame {
         }
     }
 
+    /**
+     *
+     * @param str
+     * @return 특수문자 제거
+     */
+    public static String makeSecureString2(String str){
+        String match = "[^\uAC00-\uD7A30-9a-zA-Z\\s]";
+        str = str.replaceAll(match, "");
+        return str;
+    }
+
 
 
     public static void main(String[] args) throws InterruptedException {
@@ -305,6 +316,7 @@ public class Client extends JFrame {
                 else {
                     search_title = text_p1.getText();
                     search_title =makeSecureString(search_title,search_title.length());//명령어 형식 제거
+                    search_title = makeSecureString2(search_title);//특수문자 제거
                     System.out.println(search_title);
                     recycle();
                 }
@@ -342,6 +354,7 @@ public class Client extends JFrame {
         /**
          * 크롤링한 값을 JFrame에 적용시킵니다.
          */
+        text_p1.setText(search_title);
         String header[] = {"아이디", "내용", "평점", "날짜"};
 
         DefaultTableModel model = new DefaultTableModel(review_sum,header);
@@ -440,6 +453,7 @@ public class Client extends JFrame {
                 inputStr[3] = review_date;
 
                 model.addRow(inputStr);
+                myStar.setText(score.getText());
 
                 reviewText.setText("");
                 score.setText("");
