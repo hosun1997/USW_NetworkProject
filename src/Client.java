@@ -48,20 +48,6 @@ public class Client extends JFrame {
     // recycle
     private final JLabel movieposter = new JLabel();
     private final JLabel grade = new JLabel();
-//    private final JLabel gradeAudience = new JLabel("관람객 ");
-//    private final JLabel audienceStar = new JLabel("8.69");
-//    private final JLabel gradeCritic = new JLabel("평론가");
-//    private final JLabel criticStar = new JLabel("6.08");
-//    private final JLabel gradeNetizen = new JLabel("네티즌");
-//    private final JLabel netizenStar = new JLabel("9.14");
-//    private final JLabel gradeMy = new JLabel("내 평점");
-//    private final JLabel myStar = new JLabel("0.0");
-//    private final JTextArea story = new JTextArea("줄거리");
-//    String header[] = {"아이디", "내용", "평점", "날짜"};
-//    String contents[][] = {{"hwang", "정말 재미있어요정말 재미있어요정말 재미있어요정말 재미있어요정말 재미있어요", "8/10", "2022-10-11"}};
-//    private JTable review = new JTable(contents,header);
-//    private final JScrollPane storyScroll = new JScrollPane(story);
-//    private final JScrollPane reviewScroll = new JScrollPane(review);
     private final JTextField score = new JTextField();
     private final JLabel score10 = new JLabel("/ 10");
     private final JButton registration = new JButton("등록");
@@ -212,37 +198,43 @@ public class Client extends JFrame {
             cp.join();
             if (i == 0) {
                 label1_p2[i].setBounds(45, 55, 160, 200);
-                label1_p2[i].setIcon(new ImageIcon(file.getAbsolutePath()));//이미지 대입
+                ImageIcon icon = imageSize(file.getAbsolutePath());
+                label1_p2[i].setIcon(icon);
                 label2_p2[i].setBounds(45, 40, 160, 15);
                 label2_p2[i].setText("1순위 : " + main_sum[i][0]); // 영화이름 1차원 배열 설정 후 삽입
             }
             if (i == 1) {
                 label1_p2[i].setBounds(215, 55, 160, 200);
-                label1_p2[i].setIcon(new ImageIcon(file.getAbsolutePath()));
+                ImageIcon icon = imageSize(file.getAbsolutePath());
+                label1_p2[i].setIcon(icon);
                 label2_p2[i].setBounds(215, 40, 160, 15);
                 label2_p2[i].setText("2순위 : " + main_sum[i][0]);
             }
             if (i == 2) {
                 label1_p2[i].setBounds(385, 55, 160, 200);
-                label1_p2[i].setIcon(new ImageIcon(file.getAbsolutePath()));
+                ImageIcon icon = imageSize(file.getAbsolutePath());
+                label1_p2[i].setIcon(icon);
                 label2_p2[i].setBounds(385, 40, 160, 15);
                 label2_p2[i].setText("3순위 : " + main_sum[i][0]);
             }
             if (i == 3) {
                 label1_p2[i].setBounds(45, 280, 160, 200);
-                label1_p2[i].setIcon(new ImageIcon(file.getAbsolutePath()));
+                ImageIcon icon = imageSize(file.getAbsolutePath());
+                label1_p2[i].setIcon(icon);
                 label2_p2[i].setBounds(45, 265, 160, 15);
                 label2_p2[i].setText("4순위 : " + main_sum[i][0]);
             }
             if (i == 4) {
                 label1_p2[i].setBounds(215, 280, 160, 200);
-                label1_p2[i].setIcon(new ImageIcon(file.getAbsolutePath()));
+                ImageIcon icon = imageSize(file.getAbsolutePath());
+                label1_p2[i].setIcon(icon);
                 label2_p2[i].setBounds(215, 265, 160, 15);
                 label2_p2[i].setText("5순위 : " + main_sum[i][0]);
             }
             if (i == 5) {
                 label1_p2[i].setBounds(385, 280, 160, 200);
-                label1_p2[i].setIcon(new ImageIcon(file.getAbsolutePath()));
+                ImageIcon icon = imageSize(file.getAbsolutePath());
+                label1_p2[i].setIcon(icon);
                 label2_p2[i].setBounds(385, 265, 160, 15);
                 label2_p2[i].setText("6순위 : " + main_sum[i][0]);
             }
@@ -286,6 +278,21 @@ public class Client extends JFrame {
         });
     }
 
+    private ImageIcon imageSize(String absolutePath) {
+        ImageIcon icon = new ImageIcon(absolutePath);
+        Image img = icon.getImage();
+        Image changeImg = img.getScaledInstance(160, 200, Image.SCALE_SMOOTH);
+        ImageIcon changeIcon = new ImageIcon(changeImg);
+        return changeIcon;
+    }
+    private ImageIcon imageSize2(String absolutePath) {
+        ImageIcon icon = new ImageIcon(absolutePath);
+        Image img = icon.getImage();
+        Image changeImg = img.getScaledInstance(295, 270, Image.SCALE_SMOOTH);
+        ImageIcon changeIcon = new ImageIcon(changeImg);
+        return changeIcon;
+    }
+
     /**
      * 초기 화면에서 검색창에 영화 제목을 넣어 검색했을 때 Layout을 새롭게 배치합니다.
      */
@@ -322,7 +329,8 @@ public class Client extends JFrame {
 
         movieposter.setBounds(5, 3, 295, 270);
         movieposter.setBorder(new LineBorder(Color.black));
-        movieposter.setIcon(new ImageIcon(file.getAbsolutePath()));
+        ImageIcon icon = imageSize2(file.getAbsolutePath());
+        movieposter.setIcon(icon);
 //        movieposter.setText(poster_site);//현재는 포스터가 있는 웹사이트 주소
         poster.add(movieposter);
 
@@ -411,8 +419,10 @@ public class Client extends JFrame {
 
                 // 해당 url과 노드 연결된 입력 스트림을 반환한다.
                 BufferedInputStream bis = new BufferedInputStream(is);
-                String path_name = "C:/Users/RJW/IdeaProjects/USW_NetworkProject/recommendMovie/"+file_name+".png";// 파일경로 지정
+                String path_name = "./recommendMovie/" +file_name + ".png";
+//                String path_name = "C:/Users/hwang/IdeaProjects/USW_NetworkProject/recommendMovie/"+file_name+".png";// 파일경로 지정
                 file = new File(path_name);
+
 
                 BufferedOutputStream bos = null;
                 //중복체크
