@@ -1,4 +1,4 @@
-package Test;
+package test;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -40,12 +40,6 @@ public class CrawlingServerTest {
 
             oos.writeObject(movie);
 
-
-//            Member member = (Member) ois.readObject();
-//            String id = member.getId();
-//            String pwd = member.getPwd();
-//            System.out.println("id : " + id + "\npwd : " + pwd);
-//
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {

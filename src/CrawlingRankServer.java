@@ -54,14 +54,14 @@ public class CrawlingRankServer {
 
         @Override
         public void run() {
-            Thread thread = new Thread(new webCrawlingRank());
+            Thread thread = new Thread(new WebCrawlingRank());
             thread.start();
             try {
                 thread.join();
-                MovieRankObj movieRankObj = new MovieRankObj();
-                movieRankObj.setMain_title(webCrawlingRank.main_title);
-                movieRankObj.setMain_poster(webCrawlingRank.main_poster);
-                movieRankObj.setMain_sum(webCrawlingRank.main_sum);
+                MovieRank movieRankObj = new MovieRank();
+                movieRankObj.setMain_title(WebCrawlingRank.main_title);
+                movieRankObj.setMain_poster(WebCrawlingRank.main_poster);
+                movieRankObj.setMain_sum(WebCrawlingRank.main_sum);
 
 
                 oos.writeObject(movieRankObj);//영화 랭킹 정보를 제공

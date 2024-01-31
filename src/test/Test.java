@@ -1,4 +1,4 @@
-package Test;
+package test;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,14 +32,9 @@ public class Test {
     }
 
     public static void main(String[] args) {
-//        WebCrawlingTest webCrawlingTest = new WebCrawlingTest("어벤져스");
         initialize();
         String str2 = "어벤져스''<><>@#$%^&*(''";
         str2 = makeSecureString2(str2);
         System.out.println(str2);
-//        System.out.println(str2);
-//        str2 =makeSecureString(str2,str2.length());
-//        System.out.println(str2);
-
     }
 }

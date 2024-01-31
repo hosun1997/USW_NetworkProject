@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 /**
  * CrawlingServer, CrawlingRankServer, chatTestServer 가동후 실행
  */
-public class Client extends JFrame {
+public class Client2 extends JFrame {
     /**
      * 크롤링한 값을 저장할 변수입니다.
      */
@@ -97,7 +97,7 @@ public class Client extends JFrame {
     public static void main(String[] args) throws InterruptedException {
         checkID();
         initialize();
-        new Client();
+        new Client2();
         ChatTestClient client = new ChatTestClient(userID);
         client.start(); // Client의 Socket를 만드는 start 함수임, Thread의 start함수가 아님!
     }
@@ -177,7 +177,7 @@ public class Client extends JFrame {
     /**
      * JFrame 생성합니다.
      */
-    public Client() throws InterruptedException {
+    public Client2() throws InterruptedException {
         setSize(600, 700);
         setResizable(false);
         setLocationRelativeTo(null); // Frame 화면 가운데 위치

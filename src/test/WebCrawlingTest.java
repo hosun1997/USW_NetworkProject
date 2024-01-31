@@ -1,4 +1,4 @@
-package Test;
+package test;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -45,14 +45,6 @@ public class WebCrawlingTest implements Runnable{
             int code_end = movie_code_sub.indexOf("\"><img");
 
             movie_code = movie_code_sub.substring(code_start+5,code_end);// 선택한 영화 코드
-
-//            System.out.println(movie_code_sub);
-//            System.out.println();
-
-//            System.out.println(movie_code_sub);
-//            System.out.println(code_start);
-//            System.out.println(code_end);
-//            System.out.println(movie_code);
 
         } catch (IOException e) {
             throw new RuntimeException(e);
